@@ -39,7 +39,7 @@ export default function PasswordInput (props: Props) {
             value={props.password}
             onChange={handleChangePassword}
             error={props.error}
-            helperText={props.errorMessage ?? ''}
+            helperText={props.error && props.errorMessage ? props.errorMessage : ''}
             required
             fullWidth
             id='password'
