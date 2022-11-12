@@ -69,22 +69,28 @@ export default function Login (props: Props) {
                     Sign in
                 </Typography>
                 <Box component='form' onSubmit={handleSubmit(handleSignIn)} noValidate sx={{ mt: 1 }}>
-                    <TextField
-                        {...register('username')}
-                        sx={{ mt: 2 }}
-                        error={Boolean(errors.username)}
-                        helperText={errors.username?.message as string ?? ''}
-                        required
-                        fullWidth
-                        id='username'
-                        label='Username'
-                        autoComplete='username'
-                        autoFocus />
-                    <PasswordInput
-                        {...register('password')}
-                        {...{ sx: { mt: 2 }}}
-                        error={Boolean(errors.password)}
-                        errorMessage={errors.password?.message as string ?? ''} />
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <TextField
+                                {...register('username')}
+                                sx={{ mt: 2 }}
+                                error={Boolean(errors.username)}
+                                helperText={errors.username?.message as string ?? ''}
+                                required
+                                fullWidth
+                                id='username'
+                                label='Username'
+                                autoComplete='username'
+                                autoFocus />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <PasswordInput
+                                {...register('password')}
+                                {...{ sx: { mt: 2 }}}
+                                error={Boolean(errors.password)}
+                                errorMessage={errors.password?.message as string ?? ''} />
+                        </Grid>
+                    </Grid>
                     <LoadingButton
                         type='submit'
                         fullWidth
@@ -94,9 +100,7 @@ export default function Login (props: Props) {
                     >
                         Sign In
                     </LoadingButton>
-                    <Grid container>
-                        <Grid item xs>
-                        </Grid>
+                    <Grid container justifyContent='flex-end'>
                         <Grid item>
                             <NoticeButton
                                 text="Don't have an account? Sign Up"
