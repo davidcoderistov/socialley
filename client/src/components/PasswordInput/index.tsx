@@ -3,24 +3,16 @@ import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
 import IconButton from '@mui/material/IconButton'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
-import { SxProps } from '@mui/material'
 
 
 interface Props {
-    password: string
-    onChangePassword: (password: string) => void
-    error?: boolean
-    errorMessage?: string
-    sx?: SxProps
+    error: boolean
+    errorMessage: string
 }
 
-export default function PasswordInput (props: Props) {
+const PasswordInput = React.forwardRef<HTMLInputElement, Props>(({ error, errorMessage, ...rest }, ref) => {
 
     const [showPassword, setShowPassword] = useState(false)
-
-    const handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-        props.onChangePassword(event.target.value)
-    }
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword)
@@ -36,18 +28,16 @@ export default function PasswordInput (props: Props) {
 
     return (
         <TextField
-            value={props.password}
-            onChange={handleChangePassword}
-            error={props.error}
-            helperText={props.error && props.errorMessage ? props.errorMessage : ''}
+            {...rest}
+            ref={ref}
+            error={error}
+            helperText={error && errorMessage ? errorMessage : ''}
             required
             fullWidth
             id='password'
             label='Password'
-            name='password'
             type={showPassword ? 'text': 'password'}
             autoComplete='current-password'
-            sx={props.sx}
             InputProps={{
                 endAdornment: (
                     <InputAdornment position='end'>
@@ -65,4 +55,6 @@ export default function PasswordInput (props: Props) {
             }}
         />
     )
-}
+})
+
+export default PasswordInput
