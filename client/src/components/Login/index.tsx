@@ -65,15 +65,14 @@ export default function Login (props: Props) {
                 <Avatar sx={{ m: 1, bgcolor: '#ff007f' }}>
                     <LockOutlinedIcon />
                 </Avatar>
-                <Typography component='h1' variant='h5'>
+                <Typography component='h1' variant='h5' sx={{ mb: 2 }}>
                     Sign in
                 </Typography>
                 <Box component='form' onSubmit={handleSubmit(handleSignIn)} noValidate sx={{ mt: 1 }}>
-                    <Grid container>
+                    <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
                                 {...register('username')}
-                                sx={{ mt: 2 }}
                                 error={Boolean(errors.username)}
                                 helperText={errors.username?.message as string ?? ''}
                                 required
@@ -86,7 +85,6 @@ export default function Login (props: Props) {
                         <Grid item xs={12}>
                             <PasswordInput
                                 {...register('password')}
-                                {...{ sx: { mt: 2 }}}
                                 error={Boolean(errors.password)}
                                 errorMessage={errors.password?.message as string ?? ''} />
                         </Grid>
