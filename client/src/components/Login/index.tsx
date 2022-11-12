@@ -1,4 +1,7 @@
 import React from 'react'
+import { useForm, FieldPath } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 import Avatar from '@mui/material/Avatar'
 import LoadingButton from '@mui/lab/LoadingButton'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -13,33 +16,39 @@ import NoticeButton from '../NoticeButton'
 import Copyright from '../Copyright'
 
 
-interface Props {
+interface FormData {
     username: string
-    usernameError?: boolean
-    usernameErrorMessage?: string
-    onChangeUsername: (username: string) => void
     password: string
-    passwordError?: boolean
-    passwordErrorMessage?: string
-    onChangePassword: (password: string) => void
-    onSignIn: () => void
+}
+
+interface SignInProps {
+    data: FormData
+    setServerError: (name: FieldPath<FormData>, message: string) => void
+}
+
+interface Props {
+    onSignIn: (props: SignInProps) => void
     onSignUp: () => void
     signingIn: boolean
 }
 
+const validationSchema = yup.object().shape({
+    username: yup.string().required('Username is required'),
+    password: yup.string().required('Password is required').min(8, 'Password must be at least 8 characters'),
+})
+
 export default function Login (props: Props) {
 
-    const handleSignIn = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-        props.onSignIn()
+    const { register, handleSubmit, formState: { errors }, setError } = useForm<FormData>({
+        resolver: yupResolver(validationSchema),
+    })
+
+    const setServerError = (name: FieldPath<FormData>, message: string) => {
+        setError(name, { message })
     }
 
-    const handleChangeUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
-        props.onChangeUsername(event.target.value)
-    }
-
-    const handleChangePassword = (password: string) => {
-        props.onChangePassword(password)
+    const handleSignIn = (data: FormData) => {
+        props.onSignIn({ data, setServerError })
     }
 
     return (
@@ -59,26 +68,23 @@ export default function Login (props: Props) {
                 <Typography component='h1' variant='h5'>
                     Sign in
                 </Typography>
-                <Box component='form' onSubmit={handleSignIn} noValidate sx={{ mt: 1 }}>
+                <Box component='form' onSubmit={handleSubmit(handleSignIn)} noValidate sx={{ mt: 1 }}>
                     <TextField
-                        value={props.username}
-                        onChange={handleChangeUsername}
+                        {...register('username')}
                         sx={{ mt: 2 }}
-                        error={props.usernameError}
-                        helperText={props.usernameError && props.usernameErrorMessage ? props.usernameErrorMessage : ''}
+                        error={Boolean(errors.username)}
+                        helperText={errors.username?.message as string ?? ''}
                         required
                         fullWidth
-                        id='email'
+                        id='username'
                         label='Username'
-                        name='username'
                         autoComplete='username'
                         autoFocus />
                     <PasswordInput
-                        password={props.password}
-                        onChangePassword={handleChangePassword}
-                        sx={{ mt: 2 }}
-                        error={props.passwordError}
-                        errorMessage={props.passwordErrorMessage} />
+                        {...register('password')}
+                        {...{ sx: { mt: 2 }}}
+                        error={Boolean(errors.password)}
+                        errorMessage={errors.password?.message as string ?? ''} />
                     <LoadingButton
                         type='submit'
                         fullWidth
