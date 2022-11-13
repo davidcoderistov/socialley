@@ -24,23 +24,21 @@ export default function SignUpPage () {
                 }
             }
         }).then(() => {
-                enqueueSnackbar('You have signed up successfully', { variant: 'success' })
+            enqueueSnackbar('You have signed up successfully', { variant: 'success' })
         }).catch((err: ApolloError) => {
-                const validationError = getValidationError(err)
-                if (validationError) {
-                    if (validationError.firstName) {
-                        return signUpProps.setServerError('firstName', validationError.firstName)
-                    } else if (validationError.lastName) {
-                        return signUpProps.setServerError('lastName', validationError.lastName)
-                    } else if (validationError.username) {
-                        return signUpProps.setServerError('username', validationError.username)
-                    } else if (validationError.email) {
-                        return signUpProps.setServerError('email', validationError.email)
-                    } else if (validationError.password) {
-                        return signUpProps.setServerError('password', validationError.password)
-                    }
-                }
-                enqueueSnackbar('Could not sign up. Please try again later', { variant: 'error' })
+            const validationError = getValidationError(err)
+            if (validationError?.firstName) {
+                return signUpProps.setServerError('firstName', validationError.firstName)
+            } else if (validationError?.lastName) {
+                return signUpProps.setServerError('lastName', validationError.lastName)
+            } else if (validationError?.username) {
+                return signUpProps.setServerError('username', validationError.username)
+            } else if (validationError?.email) {
+                return signUpProps.setServerError('email', validationError.email)
+            } else if (validationError?.password) {
+                return signUpProps.setServerError('password', validationError.password)
+            }
+            enqueueSnackbar('Could not sign up. Please try again later', { variant: 'error' })
         })
     }
 
