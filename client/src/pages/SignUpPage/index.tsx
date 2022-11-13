@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useSnackbar } from 'notistack'
 import SignUp, { SignUpProps } from '../../components/SignUp'
 import { useMutation, ApolloError } from '@apollo/client'
 import { SIGN_UP } from '../../graphql/mutations/auth'
@@ -9,10 +10,9 @@ export default function SignUpPage () {
 
     const [signUp, { loading }] = useMutation(SIGN_UP)
 
-    const [errorMessage, setErrorMessage] = useState<string | null>(null)
+    const { enqueueSnackbar } = useSnackbar()
 
     const handleSignUp = (signUpProps: SignUpProps) => {
-        setErrorMessage(null)
         signUp({
             variables: {
                 user: {
@@ -38,7 +38,7 @@ export default function SignUpPage () {
                     return signUpProps.setServerError('password', validationError.password)
                 }
             }
-            setErrorMessage('Could not sign up. Please try again later')
+            enqueueSnackbar('Could not sign up. Please try again later', { variant: 'error' })
         })
     }
 
@@ -50,7 +50,6 @@ export default function SignUpPage () {
         <SignUp
             onSignUp={handleSignUp}
             onSignIn={handleSignIn}
-            signingUp={loading}
-            errorMessage={errorMessage} />
+            signingUp={loading} />
     )
 }
