@@ -21,7 +21,7 @@ interface FormData {
     password: string
 }
 
-interface SignInProps {
+export interface SignInProps {
     data: FormData
     setServerError: (name: FieldPath<FormData>, message: string) => void
 }
