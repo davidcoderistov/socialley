@@ -14,7 +14,6 @@ import Container from '@mui/material/Container'
 import PasswordInput from '../PasswordInput'
 import NoticeButton from '../NoticeButton'
 import Copyright from '../Copyright'
-import AuthError from '../AuthError'
 
 
 interface FormData {
@@ -34,7 +33,6 @@ interface Props {
     onSignUp: (props: SignUpProps) => void
     onSignIn: () => void
     signingUp: boolean
-    errorMessage: string | null
 }
 
 const validationSchema = yup.object().shape({
@@ -135,14 +133,11 @@ export default function SignUp (props: Props) {
                         fullWidth
                         variant='contained'
                         loading={props.signingUp}
-                        sx={{ mt: 2 }}
+                        sx={{ mt: 2, mb: 2 }}
                     >
                         Sign Up
                     </LoadingButton>
-                    { props.errorMessage && (
-                        <AuthError message={props.errorMessage} />
-                    )}
-                    <Grid container justifyContent='flex-end' sx={{ mt: 2 }}>
+                    <Grid container justifyContent='flex-end'>
                         <Grid item>
                             <NoticeButton
                                 text="Already have an account? Sign In"
