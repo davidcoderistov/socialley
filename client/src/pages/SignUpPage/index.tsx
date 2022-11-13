@@ -23,7 +23,11 @@ export default function SignUpPage () {
                     password: signUpProps.data.password,
                 }
             }
-        }).catch((err: ApolloError) => {
+        })
+            .then(() => {
+                enqueueSnackbar('You have signed up successfully', { variant: 'success' })
+            })
+            .catch((err: ApolloError) => {
             const validationError = getValidationError(err)
             if (validationError) {
                 if (validationError.firstName) {
