@@ -1,17 +1,20 @@
-import React from 'react';
+import React from 'react'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { ApolloProvider } from '@apollo/client'
 import { SnackbarProvider } from 'notistack'
 import client from './config/apollo'
-import LandingPage from './pages/LandingPage'
+import AppRouter from './components/AppRouter'
 
 
 function App() {
 
   return (
       <ApolloProvider client={client}>
-          <SnackbarProvider maxSnack={1}>
-              <LandingPage />
-          </SnackbarProvider>
+          <Router>
+              <SnackbarProvider maxSnack={1}>
+                  <AppRouter />
+              </SnackbarProvider>
+          </Router>
       </ApolloProvider>
   )
 }
