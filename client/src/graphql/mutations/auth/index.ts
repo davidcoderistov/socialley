@@ -26,3 +26,16 @@ export const LOGIN = gql`
         }
     }
 `
+
+export const REFRESH = gql`
+    mutation refresh {
+        refresh {
+            _id
+            firstName
+            lastName
+            username
+            email
+            accessToken
+        }
+    }
+`
