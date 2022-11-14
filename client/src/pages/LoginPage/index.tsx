@@ -27,16 +27,6 @@ export default function LoginPage () {
                 }
             }
         }).then(({ data }) => {
-            console.log('LOGGED IN!')
-            console.log({
-                _id: data.login._id,
-                firstName: data.login.firstName,
-                lastName: data.login.lastName,
-                username: data.login.username,
-                email: data.login.email,
-                accessToken: data.login.accessToken,
-            })
-            console.log(setLoggedInUser)
             setLoggedInUser({
                 _id: data.login._id,
                 firstName: data.login.firstName,
