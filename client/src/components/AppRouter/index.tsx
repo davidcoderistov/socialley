@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import AppContext, { User } from '../../config/context'
+import React, { useState, useEffect, useImperativeHandle } from 'react'
+import AppContext, { User, AccessTokenRef } from '../../config/context'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { REFRESH } from '../../graphql/mutations/auth'
@@ -13,6 +13,8 @@ export default function AppRouter () {
     const [loggedInUser, setLoggedInUser] = useState<User | null>(null)
 
     const [refresh, { loading }] = useMutation(REFRESH)
+
+    useImperativeHandle(AccessTokenRef, () => loggedInUser?.accessToken)
 
     useEffect(() => {
         refresh().then(({ data }) => {
@@ -32,7 +34,7 @@ export default function AppRouter () {
             LOADING
         </div>
     ) : loggedInUser ? (
-        <AppContext.Provider value={{ loggedInUser }}>
+        <AppContext.Provider value={{ loggedInUser, setLoggedInUser }}>
             <Routes>
                 <Route path='/' element={
                     <HomePage />

@@ -1,4 +1,4 @@
-import { createContext } from 'react'
+import { createContext, createRef } from 'react'
 
 
 export interface User {
@@ -12,7 +12,12 @@ export interface User {
 
 export interface AppContext {
     loggedInUser: User | null
+    setLoggedInUser: (user: User) => void
 }
 
-export default createContext<AppContext>({ loggedInUser: null })
+export const AccessTokenRef = createRef()
 
+export default createContext<AppContext>({
+    loggedInUser: null,
+    setLoggedInUser: () => {},
+})
