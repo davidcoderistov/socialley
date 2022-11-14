@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import AppContext from '../../config/context'
 import { useSnackbar } from 'notistack'
 import Login, { SignInProps } from '../../components/Login'
 import { useMutation, ApolloError } from '@apollo/client'
@@ -7,6 +9,10 @@ import { getValidationError } from '../../utils'
 
 
 export default function LoginPage () {
+
+    const { setLoggedInUser } = useContext(AppContext)
+
+    const navigate = useNavigate()
 
     const [login, { loading }] = useMutation(LOGIN)
 
@@ -20,6 +26,25 @@ export default function LoginPage () {
                     password: signInProps.data.password,
                 }
             }
+        }).then(({ data }) => {
+            console.log('LOGGED IN!')
+            console.log({
+                _id: data.login._id,
+                firstName: data.login.firstName,
+                lastName: data.login.lastName,
+                username: data.login.username,
+                email: data.login.email,
+                accessToken: data.login.accessToken,
+            })
+            console.log(setLoggedInUser)
+            setLoggedInUser({
+                _id: data.login._id,
+                firstName: data.login.firstName,
+                lastName: data.login.lastName,
+                username: data.login.username,
+                email: data.login.email,
+                accessToken: data.login.accessToken,
+            })
         }).catch((err: ApolloError) => {
             const validationError = getValidationError(err)
             if (validationError?.username) {
@@ -32,7 +57,7 @@ export default function LoginPage () {
     }
 
     const handleSignUp = () => {
-
+        navigate('/signup')
     }
 
     return (

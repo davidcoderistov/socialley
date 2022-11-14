@@ -45,16 +45,18 @@ export default function AppRouter () {
             </Routes>
         </AppContext.Provider>
     ) : (
-        <Routes>
-            <Route path='/login' element={
-                <LoginPage />
-            } />
-            <Route path='/signup' element={
-                <SignUpPage />
-            } />
-            <Route path='*' element={
-                <Navigate to='/login' replace />
-            } />
-        </Routes>
+        <AppContext.Provider value={{ loggedInUser, setLoggedInUser }}>
+            <Routes>
+                <Route path='/login' element={
+                    <LoginPage />
+                } />
+                <Route path='/signup' element={
+                    <SignUpPage />
+                } />
+                <Route path='*' element={
+                    <Navigate to='/login' replace />
+                } />
+            </Routes>
+        </AppContext.Provider>
     )
 }

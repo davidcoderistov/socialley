@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import SignUp, { SignUpProps } from '../../components/SignUp'
 import { useMutation, ApolloError } from '@apollo/client'
@@ -7,6 +8,8 @@ import { getValidationError } from '../../utils'
 
 
 export default function SignUpPage () {
+
+    const navigate = useNavigate()
 
     const [signUp, { loading }] = useMutation(SIGN_UP)
 
@@ -25,6 +28,7 @@ export default function SignUpPage () {
             }
         }).then(() => {
             enqueueSnackbar('You have signed up successfully', { variant: 'success' })
+            navigate('/login')
         }).catch((err: ApolloError) => {
             const validationError = getValidationError(err)
             if (validationError?.firstName) {
@@ -43,7 +47,7 @@ export default function SignUpPage () {
     }
 
     const handleSignIn = () => {
-
+        navigate('/login')
     }
 
     return (
