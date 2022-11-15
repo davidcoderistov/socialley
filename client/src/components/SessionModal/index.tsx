@@ -42,7 +42,7 @@ export default function SessionModal ({ open, refreshingSession, invalidatingSes
             </DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    Your session expires in { seconds } { seconds > 1 ? 'seconds' : 'seconds' }. Do you want to stay logged in?
+                    Your session expires in { seconds } { seconds === 1 ? 'second' : 'seconds' }. Do you want to stay logged in?
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
