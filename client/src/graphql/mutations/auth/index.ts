@@ -39,3 +39,12 @@ export const REFRESH = gql`
         }
     }
 `
+
+export const LOGOUT = gql`
+    mutation logout {
+        logout {
+            _id
+            username
+        }
+    }
+`
