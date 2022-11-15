@@ -20,3 +20,12 @@ export const getValidationError = (err: ApolloError): ValidationError | null => 
     }
     return null
 }
+
+export const isInvalidSessionError = (err: any): boolean => {
+    if (err instanceof ApolloError) {
+        if (err.graphQLErrors.length > 0) {
+            return err.graphQLErrors[0].extensions.code === GRAPHQL_ERROR_CODES.INVALID_SESSION
+        }
+    }
+    return false
+}
