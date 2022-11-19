@@ -8,7 +8,10 @@ import { setStorageLoggedInUser } from '../../localStorage'
 import { isInvalidSessionError } from '../../utils'
 import LoginPage from '../../pages/LoginPage'
 import SignUpPage from '../../pages/SignUpPage'
+import Dashboard from '../Dashboard'
 import HomePage from '../../pages/HomePage'
+import MessagesPage from '../../pages/MessagesPage'
+import ProfilePage from '../../pages/ProfilePage'
 import SessionModal from '../SessionModal'
 
 
@@ -121,14 +124,22 @@ export default function AppRouter () {
                 </div>
             ) : loggedInUser ? (
                 <AppContext.Provider value={{ loggedInUser, setLoggedInUser }}>
-                    <Routes>
-                        <Route path='/' element={
-                            <HomePage onLogout={handleLogout} />
-                        } />
-                        <Route path='*' element={
-                            <Navigate to='/' replace />
-                        } />
-                    </Routes>
+                    <Dashboard>
+                        <Routes>
+                            <Route path='/' element={
+                                <HomePage onLogout={handleLogout} />
+                            } />
+                            <Route path='/messages' element={
+                                <MessagesPage />
+                            } />
+                            <Route path='/profile' element={
+                                <ProfilePage />
+                            } />
+                            <Route path='*' element={
+                                <Navigate to='/' replace />
+                            } />
+                        </Routes>
+                    </Dashboard>
                 </AppContext.Provider>
             ) : (
                 <AppContext.Provider value={{ loggedInUser, setLoggedInUser }}>
