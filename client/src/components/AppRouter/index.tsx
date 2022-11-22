@@ -127,7 +127,7 @@ export default function AppRouter () {
                     <Dashboard>
                         <Routes>
                             <Route path='/' element={
-                                <HomePage onLogout={handleLogout} />
+                                <HomePage />
                             } />
                             <Route path='/messages' element={
                                 <MessagesPage />
