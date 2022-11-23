@@ -29,3 +29,10 @@ export const isInvalidSessionError = (err: any): boolean => {
     }
     return false
 }
+
+export const getInitial = (name: string): string | null => {
+    if (name.length > 0) {
+        return name.charAt(0).toUpperCase()
+    }
+    return null
+}
