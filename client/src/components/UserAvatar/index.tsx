@@ -6,16 +6,20 @@ import { getInitial } from '../../utils'
 interface Props {
     firstName: string
     lastName: string
+    photoURL?: string
+    size?: number
+    fontSize?: number
 }
 
-export default function ChatUserAvatar ({ firstName, lastName }: Props) {
+export default function UserAvatar ({ firstName, lastName, size = 56, fontSize }: Props) {
 
     const firstInitial = useMemo(() => getInitial(firstName), [firstName])
     const secondInitial = useMemo(() => getInitial(lastName), [lastName])
 
     return (
-        <Avatar sx={{width: 56, height: 56, backgroundColor: '#2C3539'}}>
+        <Avatar sx={{ width: size, height: size, backgroundColor: '#2C3539', ...fontSize && { fontSize }}}>
             {firstInitial}{secondInitial}
         </Avatar>
     )
 }
+
