@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import ChatUserAvatar from './ChatUserAvatar'
+import UserAvatar from '../UserAvatar'
 import moment from 'moment'
 
 
@@ -25,21 +25,23 @@ function getAgo (timestamp: string) {
 }
 
 interface Props {
+    _id: string
     firstName: string
     lastName: string
+    photoURL?: string
+    selected: boolean
     message: string
     timestamp: string
-    selected: boolean
-    onClick: () => void
+    onClick: (_id: string) => void
 }
 
-export default function ChatUserItem (props: Props) {
+export default function ChatUserListItem (props: Props) {
 
     const ago = useMemo(() => getAgo(props.timestamp), [props.timestamp])
 
     const handleClick = () => {
         if (!props.selected) {
-            props.onClick()
+            props.onClick(props._id)
         }
     }
 
@@ -57,9 +59,10 @@ export default function ChatUserItem (props: Props) {
             }}
             onClick={handleClick}
         >
-            <ChatUserAvatar
+            <UserAvatar
                 firstName={props.firstName}
-                lastName={props.lastName} />
+                lastName={props.lastName}
+                photoURL={props.photoURL} />
             <Box
                 component='div'
                 display='flex'
