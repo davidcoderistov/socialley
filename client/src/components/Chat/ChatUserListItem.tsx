@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import Skeleton from '@mui/material/Skeleton'
 import UserAvatar from '../UserAvatar'
 import moment from 'moment'
 
@@ -24,7 +25,7 @@ function getAgo (timestamp: string) {
     }
 }
 
-interface Props {
+type RenderProps = {
     _id: string
     firstName: string
     lastName: string
@@ -33,14 +34,29 @@ interface Props {
     message: string
     timestamp: string
     onClick: (_id: string) => void
+    loading?: never
 }
+
+type LoadingProps = {
+    _id?: never
+    firstName?: never
+    lastName?: never
+    photoURL?: never
+    selected?: never
+    message?: never
+    timestamp?: never
+    onClick?: never
+    loading: true
+}
+
+type Props = RenderProps | LoadingProps
 
 export default function ChatUserListItem (props: Props) {
 
-    const ago = useMemo(() => getAgo(props.timestamp), [props.timestamp])
+    const ago = useMemo(() => props.timestamp ? getAgo(props.timestamp) : '', [props.timestamp])
 
     const handleClick = () => {
-        if (!props.selected) {
+        if (!props.selected && props.onClick && props._id) {
             props.onClick(props._id)
         }
     }
@@ -59,42 +75,68 @@ export default function ChatUserListItem (props: Props) {
             }}
             onClick={handleClick}
         >
-            <UserAvatar
-                firstName={props.firstName}
-                lastName={props.lastName}
-                photoURL={props.photoURL} />
+            { props.loading ? (
+                <Box
+                    component='div'
+                    width='56px'
+                >
+                    <Skeleton
+                        component='div'
+                        animation='wave'
+                        variant='circular'
+                        width='56px'
+                        height='56px'
+                        sx={{ backgroundColor: '#262626' }} />
+                </Box>
+            ) : (
+                <UserAvatar
+                    firstName={props.firstName ?? ''}
+                    lastName={props.lastName ?? ''}
+                    photoURL={props.photoURL} />
+            )}
             <Box
                 component='div'
                 display='flex'
                 flexDirection='column'
                 justifyContent='center'
                 minWidth={0}
+                width='100%'
             >
-                <Typography
-                    variant='body1'
-                    noWrap
-                >
-                    { props.firstName} {props.lastName }
-                </Typography>
+                { props.loading ? (
+                    <Skeleton sx={{ backgroundColor: '#262626' }} animation='wave' />
+                ) : (
+                    <Typography
+                        variant='body1'
+                        noWrap
+                    >
+                        { props.firstName} {props.lastName }
+                    </Typography>
+                )}
                 <Box
                     component='div'
                     display='flex'
                     flexDirection='row'
                     columnGap='4px'
                 >
-                    <Typography
-                        variant='body2'
-                        color='#8E8E8E'
-                        noWrap
-                    >{ props.message }</Typography>
-                    <Typography
-                        variant='body2'
-                        color='#8E8E8E'
-                    >&middot;</Typography>
-                    <Typography
-                        variant='body2'
-                        color='#8E8E8E'
-                    >{ ago }</Typography>
+                    { props.loading ? (
+                        <Skeleton sx={{ backgroundColor: '#262626', width: '75%' }} animation='wave' />
+                    ) : (
+                        <>
+                            <Typography
+                                variant='body2'
+                                color='#8E8E8E'
+                                noWrap
+                            >{ props.message }</Typography>
+                            <Typography
+                                variant='body2'
+                                color='#8E8E8E'
+                            >&middot;</Typography>
+                            <Typography
+                                variant='body2'
+                                color='#8E8E8E'
+                            >{ ago }</Typography>
+                        </>
+                    )}
                 </Box>
             </Box>
         </Box>
