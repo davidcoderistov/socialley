@@ -2,8 +2,10 @@ import React from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
+import CircularProgress from '@mui/material/CircularProgress'
 import CreateIcon from '@mui/icons-material/Create'
 import ChatUserListItem from './ChatUserListItem'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 
 interface User {
@@ -22,6 +24,8 @@ interface Props {
     onMessage: () => void
     users: User[]
     onClickUser: (_id: string) => void
+    onFetchMore: () => void
+    hasMore: boolean
 }
 
 export default function ChatUserList (props: Props) {
@@ -159,6 +163,7 @@ export default function ChatUserList (props: Props) {
                         height='calc(100% - 44px)'
                     >
                         <Box
+                            id='scrollableUserList'
                             component='div'
                             display='block'
                             height='100%'
@@ -166,26 +171,45 @@ export default function ChatUserList (props: Props) {
                             paddingTop='8px'
                             sx={{ overscrollBehavior: 'contain' }}
                         >
-                            <Box
-                                component='div'
-                                display='flex'
-                                position='relative'
-                                flexDirection='column'
-                                paddingY='0'
+                            <InfiniteScroll
+                                next={props.onFetchMore}
+                                hasMore={props.hasMore}
+                                loader={
+                                    <Box
+                                        component='div'
+                                        display='flex'
+                                        flexDirection='row'
+                                        justifyContent='center'
+                                        alignItems='flex-start'
+                                        height='60px'
+                                    >
+                                        <CircularProgress size={30} sx={{ color: '#FFFFFF', mt: 1 }} />
+                                    </Box>
+                                }
+                                dataLength={props.users.length}
+                                scrollableTarget='scrollableUserList'
                             >
-                                { props.users.map(user => (
-                                    <ChatUserListItem
-                                        key={user._id}
-                                        _id={user._id}
-                                        firstName={user.firstName}
-                                        lastName={user.lastName}
-                                        photoURL={user.photoURL}
-                                        message={user.message}
-                                        timestamp={user.timestamp}
-                                        selected={user.selected}
-                                        onClick={(_id) => props.onClickUser(_id)} />
-                                ))}
-                            </Box>
+                                <Box
+                                    component='div'
+                                    display='flex'
+                                    position='relative'
+                                    flexDirection='column'
+                                    paddingY='0'
+                                >
+                                    { props.users.map(user => (
+                                        <ChatUserListItem
+                                            key={user._id}
+                                            _id={user._id}
+                                            firstName={user.firstName}
+                                            lastName={user.lastName}
+                                            photoURL={user.photoURL}
+                                            message={user.message}
+                                            timestamp={user.timestamp}
+                                            selected={user.selected}
+                                            onClick={(_id) => props.onClickUser(_id)} />
+                                    ))}
+                                </Box>
+                            </InfiniteScroll>
                         </Box>
                     </Box>
                 </Box>
