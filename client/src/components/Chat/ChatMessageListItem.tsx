@@ -6,7 +6,7 @@ import UserAvatar from '../UserAvatar'
 import moment from 'moment'
 
 
-function getAgo (timestamp: string) {
+function getAgo (timestamp: number) {
     const now = moment()
     const ago = moment(timestamp)
 
@@ -32,7 +32,7 @@ type RenderProps = {
     photoURL?: string
     selected: boolean
     message: string
-    timestamp: string
+    timestamp: number
     onClick: (_id: string) => void
     loading?: never
 }
@@ -51,7 +51,7 @@ type LoadingProps = {
 
 type Props = RenderProps | LoadingProps
 
-export default function ChatUserListItem (props: Props) {
+export default function ChatMessageListItem (props: Props) {
 
     const ago = useMemo(() => props.timestamp ? getAgo(props.timestamp) : '', [props.timestamp])
 

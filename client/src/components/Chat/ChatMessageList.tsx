@@ -4,32 +4,32 @@ import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import CircularProgress from '@mui/material/CircularProgress'
 import CreateIcon from '@mui/icons-material/Create'
-import ChatUserListItem from './ChatUserListItem'
+import ChatMessageListItem from './ChatMessageListItem'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import _range from 'lodash/range'
 
 
-interface User {
+interface Message {
     _id: string
     firstName: string
     lastName: string
     photoURL?: string
     selected: boolean
     message: string
-    timestamp: string
+    timestamp: number
 }
 
 interface Props {
     username: string
     onViewProfile: () => void
     onMessage: () => void
-    users: User[]
+    messages: Message[]
     onClickUser: (_id: string) => void
     onFetchMore: () => void
     hasMore: boolean
 }
 
-export default function ChatUserList (props: Props) {
+export default function ChatMessageList (props: Props) {
 
     return (
         <Box
@@ -172,7 +172,7 @@ export default function ChatUserList (props: Props) {
                             paddingTop='8px'
                             sx={{ overscrollBehavior: 'contain' }}
                         >
-                            { props.users.length > 0 ? (
+                            { props.messages.length > 0 ? (
                                 <InfiniteScroll
                                     next={props.onFetchMore}
                                     hasMore={props.hasMore}
@@ -188,7 +188,7 @@ export default function ChatUserList (props: Props) {
                                             <CircularProgress size={30} sx={{ color: '#FFFFFF', mt: 1 }} />
                                         </Box>
                                     }
-                                    dataLength={props.users.length}
+                                    dataLength={props.messages.length}
                                     scrollableTarget='scrollableUserList'
                                 >
                                     <Box
@@ -198,8 +198,8 @@ export default function ChatUserList (props: Props) {
                                         flexDirection='column'
                                         paddingY='0'
                                     >
-                                        { props.users.map(user => (
-                                            <ChatUserListItem
+                                        { props.messages.map(user => (
+                                            <ChatMessageListItem
                                                 key={user._id}
                                                 _id={user._id}
                                                 firstName={user.firstName}
@@ -221,7 +221,7 @@ export default function ChatUserList (props: Props) {
                                     paddingY='0'
                                 >
                                     { _range(10).map(index => (
-                                        <ChatUserListItem
+                                        <ChatMessageListItem
                                             key={index}
                                             loading={true} />
                                     ))}
