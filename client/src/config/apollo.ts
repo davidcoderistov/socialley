@@ -39,11 +39,29 @@ const splitLink = split(
     },
     wsLink,
     authLink.concat(httpLink),
-);
+)
+
+const cache = new InMemoryCache({
+    typePolicies: {
+        Query: {
+            fields: {
+                getLatestMessages: {
+                    keyArgs: false,
+                    merge (existing = { data: [] }, incoming) {
+                        return {
+                            ...incoming,
+                            data: [...existing.data, ...incoming.data],
+                        }
+                    }
+                }
+            }
+        }
+    }
+})
 
 const client = new ApolloClient({
     link: splitLink,
-    cache: new InMemoryCache(),
+    cache,
 })
 
 export default client
