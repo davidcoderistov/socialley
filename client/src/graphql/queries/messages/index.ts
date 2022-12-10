@@ -2,8 +2,8 @@ import { gql } from '@apollo/client'
 
 
 export const GET_LATEST_MESSAGES = gql`
-    query getLatestMessages($paginationData: LatestMessagesPaginationData) {
-        getLatestMessages(paginationData: $paginationData) {
+    query getLatestMessages($offset: Int!, $limit: Int!) {
+        getLatestMessages(offset: $offset, limit: $limit) {
             total
             data {
                 messageId
