@@ -11,6 +11,7 @@ import _range from 'lodash/range'
 
 interface Message {
     _id: string
+    userId: string
     firstName: string
     lastName: string
     photoURL?: string
@@ -24,7 +25,7 @@ interface Props {
     onViewProfile: () => void
     onMessage: () => void
     messages: Message[]
-    onClickUser: (_id: string) => void
+    onClickUser: (userId: string) => void
     onFetchMore: () => void
     hasMore: boolean
 }
@@ -198,17 +199,18 @@ export default function ChatMessageList (props: Props) {
                                         flexDirection='column'
                                         paddingY='0'
                                     >
-                                        { props.messages.map(user => (
+                                        { props.messages.map(message => (
                                             <ChatMessageListItem
-                                                key={user._id}
-                                                _id={user._id}
-                                                firstName={user.firstName}
-                                                lastName={user.lastName}
-                                                photoURL={user.photoURL}
-                                                message={user.message}
-                                                timestamp={user.timestamp}
-                                                selected={user.selected}
-                                                onClick={(_id) => props.onClickUser(_id)} />
+                                                key={message._id}
+                                                _id={message._id}
+                                                userId={message.userId}
+                                                firstName={message.firstName}
+                                                lastName={message.lastName}
+                                                photoURL={message.photoURL}
+                                                message={message.message}
+                                                timestamp={message.timestamp}
+                                                selected={message.selected}
+                                                onClick={(userId) => props.onClickUser(userId)} />
                                         ))}
                                     </Box>
                                 </InfiniteScroll>

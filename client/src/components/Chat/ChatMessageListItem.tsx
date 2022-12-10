@@ -27,18 +27,20 @@ function getAgo (timestamp: number) {
 
 type RenderProps = {
     _id: string
+    userId: string
     firstName: string
     lastName: string
     photoURL?: string
     selected: boolean
     message: string
     timestamp: number
-    onClick: (_id: string) => void
+    onClick: (userId: string) => void
     loading?: never
 }
 
 type LoadingProps = {
     _id?: never
+    userId?: never
     firstName?: never
     lastName?: never
     photoURL?: never
@@ -56,8 +58,8 @@ export default function ChatMessageListItem (props: Props) {
     const ago = useMemo(() => props.timestamp ? getAgo(props.timestamp) : '', [props.timestamp])
 
     const handleClick = () => {
-        if (!props.selected && props.onClick && props._id) {
-            props.onClick(props._id)
+        if (!props.selected && props.onClick && props.userId) {
+            props.onClick(props.userId)
         }
     }
 
